@@ -105,6 +105,7 @@ class UserRUCA1(models.Model):
 
 
 class Referees(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     referee_name = models.CharField(max_length=100, blank=False, null=False)
     contacts = models.CharField(max_length=12, blank=False, null=False)
     email = models.EmailField(blank=True, null=True)

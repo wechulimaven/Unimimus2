@@ -14,6 +14,7 @@ urlpatterns = [
     path('student/profile/', create_prof_then_redirect_to_another_then_log_out, name='create_prof_then_redirect_to_another_then_log_out'),
     path('logout/', user_logout, name = 'user_logout'),
     path('add_profile/', student_personal_info, name = 'student_personal_info'),
+    path('referee_info/', referees_info, name = 'referees_info'),
 
 ]
 

@@ -7,7 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from accounts.forms import UserLoginForm, UserRegistrationForm, UserRUCF1Form,UserRUMForm, UserRUCF2Form, UserRUCA1Form, CreateStudentForm, RegistrationForm, PersonalDetailForm#, StudentProfileForm, StudentProfileAttributeForm
+from accounts.forms import (UserLoginForm, UserRegistrationForm, UserRUCF1Form,
+                            UserRUMForm, UserRUCF2Form, UserRUCA1Form, 
+                            CreateStudentForm, RegistrationForm, PersonalDetailForm, RefereesForm)#, StudentProfileForm, StudentProfileAttributeForm
 from accounts.models import UserRegistration,UserRUCF1,UserRUM,UserRUCF2,UserRUCA1
 # Create your views here.
 
@@ -102,7 +104,25 @@ def student_personal_info(request):
     #     messages.warning(request, f'Please Contant Administration It Seems That Your Datails Is Not Captured Correctly.')
     #     return redirect('/user/logout/')
     
-
+@login_required(login_url='/user/login/')
+def referees_info(request):
+    template_name = 'pages/referees.html'
+    profile = UserRegistration.objects.get(user = request.user.userregistration.user)
+    context = {'profile':profile}
+    if request.method == 'POST':
+        form = RefereesForm(request.POST or None, request.FILES or None, instance=profile)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user_id = request.user.id
+            obj.contacts = request.cleaned_data['contacts']
+            obj.save()
+            messages.success(request, f'Referess details updated successfully')
+        messages.warning(request, f'Update unsuccessfull. Fill all the required Fields')
+        return redirect('/user/create/')
+    form = RefereesForm()
+    context = {'form':form}
+    return render(request, template_name, context)
+            
 
 @login_required(login_url='/user/login/')
 def user_create_profile(request):
