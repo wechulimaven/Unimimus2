@@ -1,0 +1,515 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!-- start page container -->
+<div class="page-container">
+    <!-- start sidebar menu -->
+    {% include 'includes/sidebar.html' %}
+    <!-- end sidebar menu -->
+    <!-- start page content -->
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <div class="page-bar">
+                <div class="page-title-breadcrumb">
+                    <div class=" pull-left">
+                        <div class="page-title">Profile</div>
+                    </div>
+                    <ol class="breadcrumb page-breadcrumb pull-right">
+                        <li><i class="material-icons">home</i>&nbsp;<a class="parent-item" href="">Home</a>&nbsp;<i
+                                class="material-icons">arrow_forward</i>
+                        </li>
+                        <li class="active">Profile Create</li>
+                    </ol>
+                </div>
+                {% if messages %}
+                {% for  message in messages %}
+                <div class="alert alert-{{message.tags}}">
+                    {{message}}
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <!-- start widget -->
+
+            {% if user_profile.birth_cert_no %}
+            {% else %}
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <form action="{% url 'profile_create' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-box">
+                            <div class="card-head">
+                                <header>Personal Information</header>
+                                <button id="panel-button" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                                    data-upgraded=",MaterialButton">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    data-mdl-for="panel-button">
+                                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                                        here</li>
+                                </ul>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-lg-4 p-t-20">
+                                    {% comment %} <h6>Your current Name is {{user_profile.student_name}}</h6>
+                                    <h7>Edit where possible</h7> {% endcomment %}
+                                    <div
+                                    
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ personalInfo.student_name }}
+                                        <label class="mdl-textfield__label">{{user_profile.student_name}}</label>
+                                        <span class="mdl-textfield__error">Enter Name as on Birth Certificate!</span>
+                                        {% comment %} {{user.userregistration.profile_picture.url}} {% endcomment %}
+                                        
+                                    </div>
+                                </div>
+                               
+                                 <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ personalInfo.birth_cert_no }}
+                                        {% comment %} <label class="mdl-textfield__label" for="birth_cert_no">Birth Certificate Number</label> {% endcomment %}
+                                        <span class="mdl-textfield__error">Valid Birth Certificate Number Required</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ personalInfo.id_passport_no}}
+                                        {% comment %} <label class="mdl-textfield__label">Id or passport Number</label> {% endcomment %}
+                                        <span class="mdl-textfield__error">Id or passport Number required!</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
+                                        {{ personalInfo.kcse_mean_grade}}
+                                        <label for="kcse_mean_grade" class="pull-right margin-0">
+                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        </label>
+                                        {% comment %} <label for="kcse_mean_grade" class="mdl-textfield__label">KCSE Mean Grade</label> {% endcomment %}
+                                        <ul data-mdl-for="kcse_mean_grade"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li data-val="DE" class="mdl-menu__item">A_plain</li>
+                                            <li data-val="DE" class="mdl-menu__item">A-</li>
+                                            <li data-val="DE" class="mdl-menu__item">B+</li>
+                                            <li data-val="DE" class="mdl-menu__item">B_plain</li>
+                                            <li data-val="DE" class="mdl-menu__item">B-</li>
+                                            <li data-val="DE" class="mdl-menu__item">C+</li>
+                                            <li data-val="DE" class="mdl-menu__item">C_plain</li>
+                                            <li data-val="DE" class="mdl-menu__item">C-</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-12 mb-4">
+                                        <label for="country">Nationality/Country</label>
+                                        {{ personalInfo.nationality }}
+                                        <div class="invalid-feedback">
+                                        Please select a valid country.
+                                        </div>
+                                </div>
+                              
+                                <div class="col-lg-4 p-t-40">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="physicaly_impaired" id="physicaly_impaired">
+                                        {{personalInfo.physicaly_impaired}}
+                                        <label class="custom-control-label" for="physicaly_impaired">Are you Physicaly Impaired</label>
+                                    </div>
+                                </div>
+
+                                 <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ personalInfo.physicaly_impaired_details }}
+                                        <label class="mdl-textfield__label" for="text5">Impared Details</label>
+                                        {% comment %} <span class="mdl-textfield__error">Number required!</span> {% endcomment %}
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
+                                    <button type="reset"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            {% if not user_profile.email %}
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <form action="{% url 'profile_create' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-box">
+                            <div class="card-head">
+                                <header>Registration Information</header>
+                                <button id="panel-button" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                                    data-upgraded=",MaterialButton">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    data-mdl-for="panel-button">
+                                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                                        here</li>
+                                </ul>
+                            </div>
+                            <div class="card-body row">
+                              
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ form.email }}
+                                        <label class="mdl-textfield__label">Email</label>
+                                        <span class="mdl-textfield__error">Enter Valid Email Address!</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ form.joined_date }}
+                                        <label class="mdl-textfield__label">Joining Date</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
+                                        {{ form.gender }}
+                                        <label for="gender" class="pull-right margin-0">
+                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        </label>
+                                        <label for="gender" class="mdl-textfield__label">Gender</label>
+                                        <ul data-mdl-for="gender" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="DE">Male</li>
+                                            <li class="mdl-menu__item" data-val="BY">Female</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
+                                        {{ form.salutation }}
+                                        <label for="salutation" class="pull-right margin-0">
+                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        </label>
+                                        <label for="salutation" class="mdl-textfield__label">Salutation</label>
+                                        <ul data-mdl-for="salutation"
+                                            class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="DE">Mr</li>
+                                            <li class="mdl-menu__item" data-val="BY">Ms</li>
+                                            <li class="mdl-menu__item" data-val="BY">Mrs</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
+                                        {{ form.ethinicity }}
+                                        <label for="ethinicity" class="pull-right margin-0">
+                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        </label>
+                                        <label for="ethinicity" class="mdl-textfield__label">Ethinicity</label>
+                                        <ul data-mdl-for="ethinicity" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="DE">Luo</li>
+                                            <li class="mdl-menu__item" data-val="BY">Luhya</li>
+                                            <li class="mdl-menu__item" data-val="BY">Kalenjin</li>
+                                            <li class="mdl-menu__item" data-val="BY">Kikuyu</li>
+                                            <li class="mdl-menu__item" data-val="BY">Kamba</li>
+                                            <li class="mdl-menu__item" data-val="BY">Swahili</li>
+                                            <li class="mdl-menu__item" data-val="BY">Mijikenda</li>
+                                            <li class="mdl-menu__item" data-val="BY">Turkana</li>
+                                            <li class="mdl-menu__item" data-val="BY">Maasai</li>
+                                            <li class="mdl-menu__item" data-val="BY">Marakwet</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
+                                        {{ form.religion }}
+                                        <label for="religion" class="pull-right margin-0">
+                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        </label>
+                                        <label for="religion" class="mdl-textfield__label">Religion</label>
+                                        <ul data-mdl-for="religion" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="DE">Muslim</li>
+                                            <li class="mdl-menu__item" data-val="BY">Christian</li>
+                                            <li class="mdl-menu__item" data-val="BY">Pagan</li>
+                                            <li class="mdl-menu__item" data-val="BY">Budhist</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height txt-full-width">
+                                        {{ form.mstatus }}
+                                        <label for="mstatus" class="pull-right margin-0">
+                                            <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+                                        </label>
+                                        <label for="mstatus" class="mdl-textfield__label">Marital Status</label>
+                                        <ul data-mdl-for="mstatus" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
+                                            <li class="mdl-menu__item" data-val="DE">Single</li>
+                                            <li class="mdl-menu__item" data-val="BY">Married</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                              
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ form.phone_number }}
+                                        <label class="mdl-textfield__label" for="text5">Mobile Number 1</label>
+                                        <span class="mdl-textfield__error">Number required!</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ form.phone_number2 }}
+                                        <label class="mdl-textfield__label" for="text5">Mobile Number 2</label>
+                                        <span class="mdl-textfield__error">Optional</span>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 p-t-20">
+                                    <div
+                                        class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label txt-full-width">
+                                        {{ form.dob }}
+                                        <label class="mdl-textfield__label">Birth Date</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 p-t-20">
+                                    <label class="control-label col-md-3">Upload Passport Photo
+                                    </label>
+                                    <div class="col-md-12">
+                                        {{ form.profile_picture }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
+                                    <button type="reset"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- end widget -->
+            <!-- start widget -->
+
+            {% if not user.userrucf1.f1form %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="{% url 'profile_create' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-box">
+                            <div class="card-head">
+                                <header>STUDENT DETAILS RUC F1 Form Upload</header>
+                                <button id="panel-button" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                                    data-upgraded=",MaterialButton">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    data-mdl-for="panel-button">
+                                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                                        here</li>
+                                </ul>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-lg-12 p-t-20">
+                                    <label class="control-label col-md-3">Upload RUC F1 FORM (FOUR COPIES OF THIS FORM)
+                                    </label>
+                                    <div class="col-md-12">
+                                        {{userRUCF1Form.f1form}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
+                                    <button type="reset"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- end widget -->
+
+            <!-- start widget -->
+
+            {% if not user.userrum.rumform %}
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="{% url 'profile_create' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-box">
+                            <div class="card-head">
+                                <header>STUDENTS ENTRANCE MEDICAL EXAMINATION RU-M Form Upload</header>
+                                <button id="panel-button" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                                    data-upgraded=",MaterialButton">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    data-mdl-for="panel-button">
+                                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                                        here</li>
+                                </ul>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-lg-12 p-t-20">
+                                    <label class="control-label col-md-3">Upload RU-M FORM
+                                    </label>
+                                    <div class="col-md-12">
+                                        {{userRUMForm.rumform}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
+                                    <button type="reset"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- end widget -->
+            <!-- start widget -->
+
+            {% if not user.userrucf2.f2form %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="{% url 'profile_create' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-box">
+                            <div class="card-head">
+                                <header>ACCEPTANCE FORM RUC F2 Form Upload</header>
+                                <button id="panel-button" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                                    data-upgraded=",MaterialButton">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    data-mdl-for="panel-button">
+                                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                                        here</li>
+                                </ul>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-lg-12 p-t-20">
+                                    <label class="control-label col-md-3">Upload RUC F2 FORM
+                                    </label>
+                                    <div class="col-md-12">
+                                        {{userRUCF2Form.f2form}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
+                                    <button type="reset"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- end widget -->
+            <!-- start widget -->
+
+            {% if user.userruca1.a1form %}
+{% else %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <form action="{% url 'profile_create' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="card-box">
+                            <div class="card-head">
+                                <header>APPLICATION FOR HOSTEL ACCOMODATION RUC A1 Form Upload</header>
+                                <button id="panel-button" class="mdl-button mdl-js-button mdl-button--icon pull-right"
+                                    data-upgraded=",MaterialButton">
+                                    <i class="material-icons">more_vert</i>
+                                </button>
+                                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+                                    data-mdl-for="panel-button">
+                                    <li class="mdl-menu__item"><i class="material-icons">assistant_photo</i>Action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">print</i>Another action
+                                    </li>
+                                    <li class="mdl-menu__item"><i class="material-icons">favorite</i>Something else
+                                        here</li>
+                                </ul>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col-lg-12 p-t-20">
+                                    <label class="control-label col-md-3">Upload RUC A1 FORM
+                                    </label>
+                                    <div class="col-md-12">
+                                        {{userRUCA1Form.a1form}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 p-t-20 text-center">
+                                    <button type="submit"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 m-r-20 btn-pink">Submit</button>
+                                    <button type="reset"
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+            <!-- end widget -->
+        </div>
+    </div>
+    <!-- end page content -->
+    <!-- start chat sidebar -->
+    {% include 'includes/applicationsettings.html' %}
+    <!-- end chat sidebar -->
+</div>
+<!-- end page container -->
+{% endblock %}

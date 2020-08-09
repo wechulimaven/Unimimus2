@@ -1,0 +1,35 @@
+{% extends 'Oauth.html' %}
+{% load static %}
+{% block content %}
+<div class="limiter">
+    <div class="container-login100 page-background">
+        {% for field in form %} 
+            {% for error in field.errors %}
+                <div class="alert alert-info">
+                    <p class="text-danger">{{error}}</p>
+                </div>                        
+            {% endfor %}
+        {% endfor %}
+        <div class="wrap-login100">
+            <form action="{% url 'create_prof_then_redirect_to_another_then_log_out' %}" method="POST">
+                {% csrf_token %}
+                <span class="login100-form-logo">
+                    <img alt="" src="{% static 'img/logo-2.png' %}">
+                </span>
+                <span class="login100-form-title p-b-34 p-t-27">
+                    Enter Personal infor where For {{user.username}}
+                </span>
+                <div class="wrap-input100 validate-input" data-validate="Admision Number">
+                    {{ form }}
+                </div>
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn">
+                        Create Profile
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end page container -->
+{% endblock %}

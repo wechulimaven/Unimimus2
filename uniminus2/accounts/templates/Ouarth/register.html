@@ -1,0 +1,50 @@
+{% extends 'Oauth.html' %}
+{% load static %}
+{% block content %}
+<div class="limiter">
+    <div class="container-login100 page-background">
+        <div class="wrap-login100">
+            <form action="{% url 'user_register' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <span class="login100-form-logo">
+                    <img alt="" src="{% static 'img/logo-2.png' %}">
+                </span>
+                <span class="login100-form-title p-b-34 p-t-27">
+                    Register
+                </span>
+                
+                {% for field in form %} 
+                    {% for error in field.errors %}
+                        <div class="alert alert-info">
+                            <p class="text-danger">{{error}}</p>
+                        </div>                        
+                    {% endfor %}
+                {% endfor %}
+                <div class="wrap-input100 validate-input" data-validate="Enter username">
+                    <input class="input100" type="text" name="username" placeholder="Usename">
+                    <i class="material-icons focus-input100 text-warning">person</i>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Enter Valid Email">
+                    <input class="input100" type="email" name="email" placeholder="Email">
+                    <i class="material-icons focus-input100 text-warning">mail</i>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <input class="input100" type="password" name="password" placeholder="Password">
+                    <i class="material-icons focus-input100 text-warning">fingerprint</i>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Enter password">
+                    <input class="input100" type="password" name="password2" placeholder="Confirm Password">
+                    <i class="material-icons focus-input100 text-warning">fingerprint</i>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button type="submit" class="login100-form-btn">
+                        Sign Up
+                    </button>
+                    <a href="{% url 'user_login' %}" class="text-white ml-5 mt-4">Already Have an Account?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end page container -->
+{% endblock %}
